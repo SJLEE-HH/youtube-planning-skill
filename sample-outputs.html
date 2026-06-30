@@ -1,0 +1,1004 @@
+<title>YouTube Planning Skill — 테스트 출력물</title>
+<meta name="description" content="youtube-planning 스킬 with_skill 테스트 결과 3개 (재테크·건강·여행)">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F5F4EF;
+  --surface: #FFFFFF;
+  --text: #1B1B18;
+  --muted: #78776E;
+  --accent: #1D40C8;
+  --accent-tint: #EDF0FF;
+  --border: #E3E1DA;
+  --mono: #3D3C35;
+  --pill-bg: #EDF0FF;
+  --pill-text: #1D40C8;
+  --pass-bg: #EAFAF1;
+  --pass-text: #1A6B3C;
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* ── Tabs ── */
+.tab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0 32px;
+}
+.tab-bar__logo {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  padding-right: 28px;
+  border-right: 1px solid var(--border);
+  margin-right: 12px;
+  white-space: nowrap;
+}
+.tab {
+  all: unset;
+  cursor: pointer;
+  padding: 14px 18px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ── Panels ── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── Layout ── */
+.doc-wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0 48px;
+  align-items: start;
+}
+
+/* ── Sidebar nav ── */
+.side-nav {
+  position: sticky;
+  top: 57px;
+  padding-top: 8px;
+}
+.side-nav__item {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 5px 10px;
+  border-left: 2px solid var(--border);
+  text-decoration: none;
+  transition: color .12s, border-color .12s;
+  letter-spacing: .01em;
+}
+.side-nav__item:hover { color: var(--text); border-left-color: var(--text); }
+.side-nav__item.current { color: var(--accent); border-left-color: var(--accent); }
+
+/* ── Doc header ── */
+.doc-header {
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.doc-header__eyebrow {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.doc-header__title {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+  text-wrap: balance;
+  margin-bottom: 12px;
+}
+.doc-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.pill--gray {
+  background: #F0EFEA;
+  color: var(--muted);
+}
+
+/* ── Sections ── */
+.section {
+  margin-bottom: 44px;
+  scroll-margin-top: 72px;
+}
+.section__head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.section__num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  min-width: 24px;
+}
+.section__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── Program names ── */
+.prog-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.prog-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 16px;
+  align-items: start;
+}
+.prog-item__num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  padding-top: 3px;
+  font-variant-numeric: tabular-nums;
+  min-width: 16px;
+}
+.prog-item__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.prog-item__desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Script structure ── */
+.script-block {
+  background: #F9F8F5;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  font-family: "SF Mono", "Fira Code", ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--mono);
+  overflow-x: auto;
+  white-space: pre;
+}
+.script-note {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--muted);
+  padding: 12px 16px;
+  background: var(--accent-tint);
+  border-radius: 6px;
+  line-height: 1.6;
+}
+
+/* ── View count table ── */
+.table-wrap { overflow-x: auto; margin-bottom: 16px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+thead tr { background: #F0EFEA; }
+th {
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+.td-label { font-weight: 600; }
+.td-conserv { color: #B06000; }
+.td-neutral { color: var(--text); }
+.td-optimis { color: #1A6B3C; font-weight: 600; }
+
+.var-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.var-item {
+  font-size: 13.5px;
+  padding: 9px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 10px;
+}
+.var-item::before {
+  content: "▸";
+  color: var(--accent);
+  font-size: 11px;
+  padding-top: 3px;
+}
+
+/* ── Hosts ── */
+.host-list { display: flex; flex-direction: column; gap: 14px; }
+.host-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+.host-card__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.host-card__name { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.host-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.host-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.host-link:hover { opacity: .75; }
+.host-link--yt { background: #FEE2E2; color: #C0280D; }
+.host-link--ig { background: #FDE8FF; color: #8B1EA6; }
+.host-card__body { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+.host-card__why {
+  margin-top: 8px;
+  font-size: 13px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border-radius: 5px;
+  color: var(--muted);
+}
+.host-card__why strong { color: var(--text); }
+
+/* ── Guest section ── */
+.guest-note {
+  margin-top: 18px;
+  font-size: 13.5px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.guest-note strong { color: var(--text); display: block; margin-bottom: 6px; font-size: 14px; }
+
+/* ── Episodes ── */
+.ep-list { display: flex; flex-direction: column; gap: 18px; }
+.ep-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ep-card__head {
+  background: var(--accent);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ep-card__num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+}
+.ep-card__title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.35;
+}
+.ep-card__body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.ep-row { display: grid; grid-template-columns: 72px 1fr; gap: 0 12px; font-size: 13.5px; }
+.ep-row__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--accent);
+  padding-top: 2px;
+}
+.ep-row__val { color: var(--text); line-height: 1.6; }
+.ep-reactions {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.7;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-radius: 6px;
+}
+
+/* ── Rival table ── */
+.rival-section { margin-top: 8px; }
+.rival-section th:first-child, .rival-section td:first-child { min-width: 90px; }
+.rival-highlight { background: var(--accent-tint); font-weight: 600; color: var(--accent); }
+
+/* ── Score badge ── */
+.score-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--pass-bg);
+  color: var(--pass-text);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+}
+.score-banner::before { content: "✓"; font-size: 14px; }
+
+@media (max-width: 680px) {
+  .doc-wrap { grid-template-columns: 1fr; }
+  .side-nav { display: none; }
+  .tab { padding: 14px 12px; font-size: 13px; }
+  .tab-bar { padding: 0 12px; }
+}
+</style>
+
+<!-- ── Tab bar ── -->
+<nav class="tab-bar" role="tablist">
+  <span class="tab-bar__logo">youtube-planning</span>
+  <button class="tab active" role="tab" onclick="switchTab(0)">재테크 · 금융</button>
+  <button class="tab" role="tab" onclick="switchTab(1)">건강 · 운동</button>
+  <button class="tab" role="tab" onclick="switchTab(2)">여행 브이로그</button>
+</nav>
+
+<!-- ══════════════════ PANEL 1: 재테크 ══════════════════ -->
+<div class="panel active" id="p0">
+<div class="doc-wrap">
+  <aside class="side-nav">
+    <a class="side-nav__item current" href="#p0-s1">프로그램명</a>
+    <a class="side-nav__item" href="#p0-s2">영상 구조</a>
+    <a class="side-nav__item" href="#p0-s3">예상 조회수</a>
+    <a class="side-nav__item" href="#p0-s4">진행자/게스트</a>
+    <a class="side-nav__item" href="#p0-s5">파일럿 에피소드</a>
+    <a class="side-nav__item" href="#p0-s6">라이벌 비교</a>
+  </aside>
+  <main>
+    <div class="doc-header">
+      <div class="doc-header__eyebrow">with_skill 출력 · Eval 1</div>
+      <h1 class="doc-header__title">유튜브 기획안: 재테크/금융<br>30~40대 직장인 타깃</h1>
+      <div class="doc-header__meta">
+        <span class="pill">라이벌: 신사임당</span>
+        <span class="pill">라이벌: 월급쟁이부자들TV</span>
+        <span class="pill--gray pill">평균 조회수 50만~100만</span>
+      </div>
+    </div>
+    <div class="score-banner">체크리스트 6/6 통과 · 100%</div>
+
+    <!-- S1 -->
+    <section class="section" id="p0-s1">
+      <div class="section__head"><span class="section__num">01</span><h2 class="section__title">프로그램명 후보 리스트</h2></div>
+      <ul class="prog-list">
+        <li class="prog-item"><span class="prog-item__num">1</span><div><div class="prog-item__name">월급 이후</div><div class="prog-item__desc">"월급 받고 난 다음, 뭘 해야 하지?"라는 직장인의 공통 고민을 제목으로 직결시킨 시리즈명. '월급쟁이'라는 키워드와 겹치지 않으면서도 직장인 감성을 정확히 겨냥한다.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">2</span><div><div class="prog-item__name">돈 공부 야근</div><div class="prog-item__desc">바쁜 직장인이 퇴근 후 짬 내서 보는 금융 공부 콘셉트. '야근'이라는 친숙한 직장인 단어로 진입 장벽을 낮추고, '직장인 돈 공부' 검색에도 노출된다.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">3</span><div><div class="prog-item__name">이번 달 재무제표</div><div class="prog-item__desc">내 삶을 기업 재무제표처럼 분석하자는 컨셉. "나도 CEO처럼 내 돈을 관리하자"는 메시지. 30~40대가 공감할 현실적 뉘앙스.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">4</span><div><div class="prog-item__name">직장인 머니 클래스</div><div class="prog-item__desc">검색 키워드(직장인, 재테크, 클래스)를 직접 담아 SEO에 강하고, 시리즈 구조임을 직관적으로 알 수 있다.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">5</span><div><div class="prog-item__name">내 월급 살리기</div><div class="prog-item__desc">'월급이 죽어가고 있다'는 인플레·세금 이슈를 역으로 활용한 제목. 절박감과 유머를 동시에 줘서 클릭을 유도한다.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">6</span><div><div class="prog-item__name">부자 되기 전날 밤</div><div class="prog-item__desc">직장인이 잠들기 전 10~15분 틈새 시청 습관을 노린 포지셔닝. "아직 부자는 아니지만 내일을 준비하는 나"라는 정서에 공감.</div></div></li>
+      </ul>
+    </section>
+
+    <!-- S2 -->
+    <section class="section" id="p0-s2">
+      <div class="section__head"><span class="section__num">02</span><h2 class="section__title">영상 구조 (스크립트 구조)</h2></div>
+      <div class="script-block">[00:00–01:00] 훅 — 질문형 오프닝
+  → "혹시 지금 월급 빠져나가는 순서, 알고 계세요?"
+  → 시청자의 '나 이야기네' 반응 즉시 유발. 첫 10초에 이탈 방지 키워드 배치.
+
+[01:00–03:00] 이번 에피소드 배경 설명
+  → "오늘 이 이야기를 꺼낸 이유" — 실제 사례·뉴스·주변 직장인 이야기로 현실감 부여.
+  → '왜 지금 이걸 알아야 하는지' 납득시키는 구간.
+
+[03:00–08:00] 핵심 개념 설명 (쉽게)
+  → 전문 용어는 한 줄 비유로 풀어서 설명. 예: "ETF는 모둠 회처럼 한 접시에 다 담긴 것"
+  → 슬라이드/자막으로 핵심 단어 강조.
+
+[08:00–16:00] 실전 적용 3단계 (핵심)
+  → 오늘 배운 내용을 스텝 바이 스텝 설명.
+  → 단계마다 "왜 이 순서인가"를 설명해 맥락 있는 가이드 제공.
+
+[16:00–20:00] 주의사항 & 흔한 실수
+  → "이것만 조심하면 됩니다" 파트. 실패 사례 1개 삽입으로 현실감.
+
+[20:00–22:00] 오늘의 정리 + 다음 편 예고
+  → 핵심 3줄 요약. 다음 편 내용 살짝 공개해 구독 전환 유도.
+
+[22:00–23:00] 아웃트로 / 구독 유도</div>
+      <div class="script-note">라이벌 채널이 '정보량'에 집중한다면, 이 채널은 <strong>'따라 하기 쉬운 순서'</strong>에 집중하는 것이 차별점. 기준 포맷 20~25분 / 주 1~2회 업로드 / 진행자 1인 토크 + 사례 삽입.</div>
+    </section>
+
+    <!-- S3 -->
+    <section class="section" id="p0-s3">
+      <div class="section__head"><span class="section__num">03</span><h2 class="section__title">예상 조회수</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>시기</th><th>보수 시나리오</th><th>중립 시나리오</th><th>낙관 시나리오</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">업로드 후 1주일</td><td class="td-conserv">3,000~8,000</td><td class="td-neutral">1만~3만</td><td class="td-optimis">3만~10만</td></tr>
+            <tr><td class="td-label">1개월 후</td><td class="td-conserv">5,000~1만</td><td class="td-neutral">2만~5만</td><td class="td-optimis">5만~15만</td></tr>
+            <tr><td class="td-label">6개월~1년 후</td><td class="td-conserv">1만~3만</td><td class="td-neutral">5만~20만</td><td class="td-optimis">20만~100만</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="var-list">
+        <li class="var-item"><span><strong>썸네일</strong> — 구체적 수치 + 인물 클로즈업 조합이 금융 카테고리 CTR 상승에 효과적</span></li>
+        <li class="var-item"><span><strong>시즌성</strong> — 연말 연봉 협상(11~12월), 연말정산(1월), 종합소득세(4~5월) 시즌 관련 주제는 조회수 3~5배 급등 가능</span></li>
+        <li class="var-item"><span><strong>초반 알고리즘 반응</strong> — 업로드 후 48시간 커뮤니티 배포 전략 필수 (카카오 오픈채팅, 직장인 카페)</span></li>
+      </ul>
+    </section>
+
+    <!-- S4 -->
+    <section class="section" id="p0-s4">
+      <div class="section__head"><span class="section__num">04</span><h2 class="section__title">진행자 후보 및 게스트</h2></div>
+      <div class="host-list">
+        <div class="host-card">
+          <div class="host-card__label">후보 1</div>
+          <div class="host-card__name">슈카 (슈카월드)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@syukaworld" target="_blank">▶ YouTube @syukaworld</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/syuka_world" target="_blank">◉ Instagram @syuka_world</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 복잡한 경제·금융 이슈를 예능처럼 쉽게 풀어내는 것으로 유명. "어렵지 않게 실생활 금융 정보"라는 채널 방향과 정확히 일치. 구독자 250만+의 신뢰도가 초기 채널 안착에 강점.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 2</div>
+          <div class="host-card__name">박곰희 (박곰희TV)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@박곰희tv" target="_blank">▶ YouTube @박곰희tv</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 30대 직장인 여성이 주식·ETF·절약을 직접 실천하며 기록하는 채널. "나와 똑같은 사람"이라는 공감 코드가 강해 30~40대 직장인 타깃에 정확히 맞음. 금융 채널의 성비 다양성 확보.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 3</div>
+          <div class="host-card__name">염승환 (염블리)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@염블리TV" target="_blank">▶ YouTube @염블리TV</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/yeom_seung_hwan" target="_blank">◉ Instagram @yeom_seung_hwan</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> LS증권 이사 출신으로 주식·ETF 전문가이면서 방송·유튜브 친화적. "염블리"라는 캐릭터로 딱딱한 금융을 친근하게 전달. 전문성과 대중 소통력을 동시에 갖춘 드문 조합.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 4</div>
+          <div class="host-card__name">오건영 (신한은행 부부장, 경제 작가)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--ig" href="https://instagram.com/okengyung" target="_blank">◉ Instagram @okengyung</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 『부의 시나리오』 저자. 복잡한 금리·환율·경제 흐름을 직장인 눈높이로 설명하는 데 특화. 기존 유튜버와 달리 '현직 금융 전문가'라는 포지셔닝으로 신뢰도 차별화 가능.</div>
+        </div>
+      </div>
+      <div class="guest-note">
+        <strong>게스트 추천 (월 1회 스페셜 편)</strong>
+        세무사 이민주 (연말정산·절세 편) · 부동산 유튜버 아파트멘터리 (내 집 마련 편) · 재무설계사 자격증 보유 인플루언서 · 익명 직장인 인터뷰 "3년 만에 1억 모은 34살"
+      </div>
+    </section>
+
+    <!-- S5 -->
+    <section class="section" id="p0-s5">
+      <div class="section__head"><span class="section__num">05</span><h2 class="section__title">파일럿 에피소드 4개</h2></div>
+      <div class="ep-list">
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 01</span><span class="ep-card__title">월급날 통장에서 돈이 사라지는 진짜 이유 — 당신이 모르는 8가지 새는 구멍</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">구독 서비스, 자동이체, 보험료, 통신비 등 고정비 중 당장 끊어도 되는 항목을 카테고리별로 분류. "이것부터 정리하면 매달 20~30만원이 남는다"는 실전 가이드.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">진행자 1인 — 실제 가계부 화면 공유 형식</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">"나도 지금 당장 내 통장 들여다봐야겠다"는 행동 유발. 시청 중 은행 앱 켜는 사람이 나올 것.</span></div>
+            <div class="ep-reactions">"보다가 진짜 구독 서비스 3개 끊었어요" · "이거 남편한테 보내줌. 우리 집 얘기인 줄 알았음" · "신사임당은 이미 부자 된 사람 얘기고 이건 진짜 내 얘기네"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 02</span><span class="ep-card__title">34살에 처음 ETF 샀습니다 — 증권사 앱 켜는 것부터 알려드림</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">증권 계좌 개설부터 첫 ETF 매수까지 스크린 녹화로 보여줌. S&P500 ETF vs 코스피 ETF 비교.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">진행자 1인 — 실제 스마트폰 화면 미러링 포함</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">금융 콘텐츠의 가장 큰 장벽인 '어디서부터 시작해야 하나'를 해결하는 편.</span></div>
+            <div class="ep-reactions">"드디어 첫 주식 샀어요. 이 영상 덕분에" · "이게 왜 어렵다고 생각했는지 모르겠네" · "월급쟁이부자들은 이미 다 아는 사람 기준이라 저는 이 채널이 더 맞아요"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 03</span><span class="ep-card__title">직장인 연말정산, 이것만 알면 50만원 더 돌려받는다 (실제 서류 공개)</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">직장인이 실제로 놓치는 공제 항목 TOP 5를 국세청 홈택스 화면과 함께 설명. "이 항목 하나만 챙겨도 30~50만원 차이".</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">진행자 1인 + 세무사 게스트 (10분 Q&A)</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">시즌성 검색 유입 폭발. "매년 이맘때 이 영상 다시 보게 됨" 반응 유도. 장기 조회수 누적에 가장 유리한 편.</span></div>
+            <div class="ep-reactions">"세무사 친구한테 물어봐야 했는데 이 영상 하나로 해결됨" · "저 이거 놓쳐서 작년에 20만원 날렸어요 ㅠ" · "회사 단톡방에 공유했더니 팀장님도 몰랐다고"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 04</span><span class="ep-card__title">월 300 직장인이 노후 준비하는 현실적인 방법 — IRP, 연금저축, 뭐부터?</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">월급 300만원대 직장인 기준 IRP·연금저축펀드·퇴직연금 차이 설명. "매달 10만원씩 30년 후 얼마가 되는지" 계산기 직접 시연.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">진행자 1인 — 재무설계사 자격증 보유자 추천</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">30~40대 노후 불안을 정면으로 다루면서 "이 세 가지만 기억하세요"로 쉽게 정리.</span></div>
+            <div class="ep-reactions">"37살에 IRP 처음 알았다는 게 부끄럽지만 지금이라도 알아서 다행" · "남편이랑 같이 봤는데 진짜 바로 계좌 만들었어요" · "이런 채널이 왜 이제야 생겼지"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S6 -->
+    <section class="section rival-section" id="p0-s6">
+      <div class="section__head"><span class="section__num">06</span><h2 class="section__title">라이벌 채널 대비 차별점</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>항목</th><th>신사임당 / 월급쟁이부자들TV</th><th class="rival-highlight">우리 채널</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">타깃</td><td>이미 어느 정도 알고 있는 투자자/사업가</td><td class="rival-highlight">재테크 시작 전 단계의 직장인</td></tr>
+            <tr><td class="td-label">콘텐츠 톤</td><td>고수익 사례, 동기부여, 성공 스토리</td><td class="rival-highlight">실수 방지, 첫 걸음 가이드, 따라 하기</td></tr>
+            <tr><td class="td-label">정보 수준</td><td>중~고급 (투자 경험자 기준)</td><td class="rival-highlight">초~중급 (오늘 처음 들어도 이해 가능)</td></tr>
+            <tr><td class="td-label">행동 유도</td><td>영감을 줘서 스스로 알아보게 함</td><td class="rival-highlight">영상 보면서 바로 따라 할 수 있게 함</td></tr>
+            <tr><td class="td-label">포맷</td><td>인터뷰, 강의, 부자 사례 중심</td><td class="rival-highlight">실화 기반 가이드, 스크린 녹화, 계산기</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<!-- ══════════════════ PANEL 2: 건강 ══════════════════ -->
+<div class="panel" id="p1">
+<div class="doc-wrap">
+  <aside class="side-nav">
+    <a class="side-nav__item current" href="#p1-s1">프로그램명</a>
+    <a class="side-nav__item" href="#p1-s2">영상 구조</a>
+    <a class="side-nav__item" href="#p1-s3">예상 조회수</a>
+    <a class="side-nav__item" href="#p1-s4">진행자/게스트</a>
+    <a class="side-nav__item" href="#p1-s5">파일럿 에피소드</a>
+    <a class="side-nav__item" href="#p1-s6">라이벌 비교</a>
+  </aside>
+  <main>
+    <div class="doc-header">
+      <div class="doc-header__eyebrow">with_skill 출력 · Eval 2</div>
+      <h1 class="doc-header__title">유튜브 채널 기획안:<br>50대+ 중장년 건강관리</h1>
+      <div class="doc-header__meta">
+        <span class="pill">라이벌: 핏블리</span>
+        <span class="pill">라이벌: 오하운</span>
+        <span class="pill--gray pill">타깃: 50대 이상 중장년</span>
+      </div>
+    </div>
+    <div class="score-banner">체크리스트 6/6 통과 · 100%</div>
+
+    <section class="section" id="p1-s1">
+      <div class="section__head"><span class="section__num">01</span><h2 class="section__title">프로그램명 후보 리스트</h2></div>
+      <ul class="prog-list">
+        <li class="prog-item"><span class="prog-item__num">1</span><div><div class="prog-item__name">오늘도 건강하게</div><div class="prog-item__desc">"오늘", "건강"이라는 검색 친화적 키워드를 직접 포함. 매일 실천 가능한 루틴 느낌을 주며 50대가 공감할 온기 있는 어조.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">2</span><div><div class="prog-item__name">쉰의 운동법</div><div class="prog-item__desc">'쉰(50)'과 '쉬다(rest)'의 이중적 의미를 활용한 언어유희. 50대 타깃을 명확히 하면서도 부담 없는 느낌을 전달.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">3</span><div><div class="prog-item__name">중장년 건강연구소</div><div class="prog-item__desc">'연구소' 키워드로 신뢰·전문성 강조. 검색 알고리즘에서 "중장년 운동", "50대 건강"으로 유입 기대.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">4</span><div><div class="prog-item__name">나이 들수록 가볍게</div><div class="prog-item__desc">시니어 특유의 고민(무거워지는 몸, 관절 부담)을 역으로 공략. 제목만으로 "이건 나 얘기다"라는 클릭 욕구 유발.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">5</span><div><div class="prog-item__name">50부터 건강 습관</div><div class="prog-item__desc">"50부터"라는 시작점 설정으로 "늦지 않았다"는 동기부여 메시지. 시리즈 넘버링으로 연속 시청 유도에 유리.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">6</span><div><div class="prog-item__name">움직이는 어른</div><div class="prog-item__desc">역설적이고 기억에 남는 네이밍. "어른"이라는 단어가 50대에게 자존감 있는 호칭으로 작용. 핏블리·오하운과 명확히 다른 분위기.</div></div></li>
+      </ul>
+    </section>
+
+    <section class="section" id="p1-s2">
+      <div class="section__head"><span class="section__num">02</span><h2 class="section__title">영상 구조 (스크립트 구조)</h2></div>
+      <div class="script-block">[00:00–01:00] 오프닝 훅 — 공감 한 마디
+  "무릎이 시큰거려서 계단 오를 때마다 한숨이 나오시죠?"
+  → 시청자가 "맞아" 하며 이탈을 멈추게 하는 구체적 고통 포인트부터 시작
+
+[01:00–03:00] 에피소드 소개 & 신뢰 쌓기
+  오늘 다룰 운동/습관이 왜 50대에게 특히 중요한지 짧은 근거 제시
+  → 의학적/생리학적 이유를 한 줄 설명해 신뢰도 확보
+
+[03:00–10:00] 본론 — 실전 루틴 3단계
+  파트 1: 준비 동작 (스트레칭·워밍업, 2분)
+  파트 2: 핵심 동작 2~3가지 (각 동작별 이유 설명 병행)
+  파트 3: 마무리 & 호흡 정리
+  → 단계 구분을 명확히 해 "따라 하다 어디서 멈췄지?"가 없도록 설계
+
+[10:00–13:00] 실수·주의사항 짚기
+  "이렇게 하시면 오히려 무릎에 부담갑니다" 등 흔한 오류 1~2가지
+  → 50대 시청자는 "잘못된 정보로 다칠까봐" 걱정이 크기 때문에 필수
+
+[13:00–16:00] 일상 접목 팁
+  운동 이후 식습관, 수면, 생활 소품 연계 정보
+
+[16:00–17:30] 클로징 — 작은 성공 확인
+  "오늘 이것 하나만 해도 충분합니다"
+  → 완수감 제공이 댓글 참여·구독 전환율 상승의 핵심 트리거
+
+[17:30–18:00] 아웃트로 — 다음 편 예고 & 구독 유도</div>
+      <div class="script-note">핏블리·오하운이 <strong>"동기부여형(더 열심히 하자)"</strong>이라면, 이 채널은 <strong>"안심형(이 정도면 충분하다)"</strong>으로 심리 흐름을 설계. 추천 길이: 12~18분.</div>
+    </section>
+
+    <section class="section" id="p1-s3">
+      <div class="section__head"><span class="section__num">03</span><h2 class="section__title">예상 조회수</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>시기</th><th>보수</th><th>중립</th><th>낙관</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">업로드 후 1주일</td><td class="td-conserv">5,000~1만</td><td class="td-neutral">1만~3만</td><td class="td-optimis">3만~7만</td></tr>
+            <tr><td class="td-label">1개월 후</td><td class="td-conserv">1.5만~3만</td><td class="td-neutral">3만~8만</td><td class="td-optimis">8만~15만</td></tr>
+            <tr><td class="td-label">6개월~1년</td><td class="td-conserv">5만~10만</td><td class="td-neutral">10만~25만</td><td class="td-optimis">25만~50만</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="var-list">
+        <li class="var-item"><span><strong>라이벌 공백</strong> — 현재 50대 특화 운동 채널이 국내에 거의 없어 경쟁 강도 낮음. 초기 진입 시 알고리즘 독점 가능성</span></li>
+        <li class="var-item"><span><strong>SEO</strong> — "50대 운동", "중장년 스트레칭", "무릎 안 아픈 운동" 등 롱테일 키워드가 초반 유입에 중요</span></li>
+        <li class="var-item"><span><strong>시즌성</strong> — 명절 전후, 봄·가을 야외활동 시즌에 조회수 스파이크 예상</span></li>
+      </ul>
+    </section>
+
+    <section class="section" id="p1-s4">
+      <div class="section__head"><span class="section__num">04</span><h2 class="section__title">진행자 후보 및 게스트</h2></div>
+      <div class="host-list">
+        <div class="host-card">
+          <div class="host-card__label">후보 1</div>
+          <div class="host-card__name">이재성 (한의사, 나는 몸신이다 고정 출연)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@이재성한의사" target="_blank">▶ YouTube @이재성한의사</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/dr.jaesung.lee" target="_blank">◉ Instagram @dr.jaesung.lee</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> TV조선 '나는 몸신이다' 고정 패널로 50대 이상 시청자 인지도 높음. 한의학 기반으로 "무리하지 않는 건강관리"라는 채널 방향과 일치. 중장년 시청자가 가장 신뢰하는 의료 전문가 포맷.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 2</div>
+          <div class="host-card__name">여에스더 (의사, 방송인)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@여에스더TV" target="_blank">▶ YouTube @여에스더TV</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/esther.yeo" target="_blank">◉ Instagram @esther.yeo</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 50대 전후 의사로 건강·영양 분야 방송 경력 풍부. 여성 중장년 시청자 공감대 강함. '어렵지 않은 건강 정보'를 친근하게 전달하는 스타일이 채널 톤과 일치.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 3</div>
+          <div class="host-card__name">닥터프렌즈 (정형외과·내과 의사 듀오)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@doctorfriends" target="_blank">▶ YouTube @doctorfriends</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/doctorfriends_official" target="_blank">◉ Instagram @doctorfriends_official</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 구독자 130만+의 의사 유튜버 듀오. 케미와 유머를 유지하면서 정확한 의학 정보 제공. 50대 관절·만성질환 관련 콘텐츠에 전문성 보강 가능.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 4</div>
+          <div class="host-card__name">쏘쏘핏 (50대 여성 피트니스 유튜버)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@ssofit" target="_blank">▶ YouTube @ssofit</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 실제 50대 여성 유튜버로 중장년 운동 채널을 직접 운영 중. "나도 할 수 있다"는 동질감이 타깃 시청자와 가장 강하게 연결됨. 전문가보다 현실 공감형 MC가 필요한 경우 최적.</div>
+        </div>
+      </div>
+      <div class="guest-note">
+        <strong>게스트 (에피소드별)</strong>
+        정형외과 의사 유튜버 정선근 교수 · 영양사 이경미 (식단·영양 편) · 실제 60대 구독자 동반 실습 포맷
+      </div>
+    </section>
+
+    <section class="section" id="p1-s5">
+      <div class="section__head"><span class="section__num">05</span><h2 class="section__title">파일럿 에피소드 4개</h2></div>
+      <div class="ep-list">
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 01</span><span class="ep-card__title">무릎 아픈 분들, 이 운동만큼은 꼭 하세요</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">무릎 연골 보호를 위한 허벅지 근력 강화 운동 3가지. 의자에 앉아서 할 수 있는 동작 위주. 의자 스쿼트, 누워서 다리 들기, 벽 기대 무릎 굽히기.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">메인 진행자 (물리치료사 또는 피트니스 트레이너)</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">"운동해야 하는데 무릎이 아파서 못 한다"는 가장 흔한 50대 고민 정면 해결. "의자만 있으면 된다"는 접근성.</span></div>
+            <div class="ep-reactions">"드디어 저 같은 사람을 위한 채널이 생겼네요" · "어머니한테 보내드렸어요" · "무릎 수술 고민했는데 이걸 먼저 해봐야겠네요"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 02</span><span class="ep-card__title">아침 5분, 하루가 달라지는 중장년 기상 스트레칭</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">침대에서 일어나기 전 누운 채로 할 수 있는 5분 스트레칭. 허리·목·어깨 순서. "기상 직후 관절 경직이 왜 위험한지" 의학적 설명 포함.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">메인 진행자 + (선택) 실제 60대 시청자 동반 실습</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">"운동할 시간이 없다"는 핑계 제거. 아침 루틴 콘텐츠는 재생목록 추가율이 높아 장기 유입에 유리.</span></div>
+            <div class="ep-reactions">"알람 맞춰놓고 매일 보고 있어요" · "퇴직하고 운동 시작하려는데 이게 딱이네" · "남편한테 강제로 보여줬어요"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 03</span><span class="ep-card__title">뱃살은 운동 아니라 이것 때문입니다 — 50대 복부 지방의 진실</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">50대 복부 지방이 20~30대와 다른 이유(호르몬 변화, 근감소증) 설명. 복근 운동이 아닌 "인슐린 저항성 낮추는 일상 습관" 3가지 제안.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">메인 진행자 + 영양사 게스트</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">정보형 콘텐츠라 공유율이 높고 네이버 카페·밴드 유입 기대. 핏블리·오하운과 명확히 차별화.</span></div>
+            <div class="ep-reactions">"이거 진작 알았어야 했는데" · "윗배 왜 안 빠지나 했더니" · "카카오톡으로 엄마한테 보냈어요"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 04</span><span class="ep-card__title">병원 가기 전에 해보세요 — 허리 통증 자가 완화 루틴</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">허리디스크·요통이 있는 50대를 위한 통증 완화 스트레칭. "병원에서 물리치료받는 것과 같은 동작" 프레이밍. 금지되는 경우(급성기 디스크 등)도 명확히 안내.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">메인 진행자 (물리치료사 또는 재활의학과 의사 권장)</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">"병원 전 단계" 포지셔닝으로 해당 검색어 유입 흡수. 50대 만성 통증 불안 심리를 의료비 절감 프레임으로 전환.</span></div>
+            <div class="ep-reactions">"병원 끊고 이거 매일 하고 있습니다" · "저한테 딱 필요한 영상이었어요" · "주변에 허리 아픈 분들 많아서 공유했어요"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rival-section" id="p1-s6">
+      <div class="section__head"><span class="section__num">06</span><h2 class="section__title">라이벌 채널 대비 차별점</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>구분</th><th>핏블리</th><th>오하운</th><th class="rival-highlight">우리 채널</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">주 타깃</td><td>20~40대</td><td>20~40대</td><td class="rival-highlight">50대+</td></tr>
+            <tr><td class="td-label">콘텐츠 톤</td><td>동기부여·고강도</td><td>다이어트·체형 관리</td><td class="rival-highlight">부담 없는 일상 밀착</td></tr>
+            <tr><td class="td-label">출연자</td><td>젊고 몸 좋은 트레이너</td><td>또래 공감 인플루언서</td><td class="rival-highlight">같은 세대 전문가</td></tr>
+            <tr><td class="td-label">키워드</td><td>다이어트, 홈트</td><td>운동, 살빼기</td><td class="rival-highlight">50대 운동, 무릎, 허리</td></tr>
+            <tr><td class="td-label">경쟁 강도</td><td>매우 높음</td><td>높음</td><td class="rival-highlight">공백 시장 (낮음)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<!-- ══════════════════ PANEL 3: 여행 ══════════════════ -->
+<div class="panel" id="p2">
+<div class="doc-wrap">
+  <aside class="side-nav">
+    <a class="side-nav__item current" href="#p2-s1">프로그램명</a>
+    <a class="side-nav__item" href="#p2-s2">영상 구조</a>
+    <a class="side-nav__item" href="#p2-s3">예상 조회수</a>
+    <a class="side-nav__item" href="#p2-s4">진행자/게스트</a>
+    <a class="side-nav__item" href="#p2-s5">파일럿 에피소드</a>
+    <a class="side-nav__item" href="#p2-s6">라이벌 비교</a>
+  </aside>
+  <main>
+    <div class="doc-header">
+      <div class="doc-header__eyebrow">with_skill 출력 · Eval 3</div>
+      <h1 class="doc-header__title">여행 브이로그 시리즈 기획안:<br>직장인 단기 여행 + 꿀팁 포맷</h1>
+      <div class="doc-header__meta">
+        <span class="pill">라이벌: 빠니보틀 (평균 200만~500만)</span>
+        <span class="pill">라이벌: 곽튜브 (평균 100만~300만)</span>
+        <span class="pill--gray pill">타깃: 현직 직장인</span>
+      </div>
+    </div>
+    <div class="score-banner">체크리스트 6/6 통과 · 100%</div>
+
+    <section class="section" id="p2-s1">
+      <div class="section__head"><span class="section__num">01</span><h2 class="section__title">프로그램명 후보 리스트</h2></div>
+      <ul class="prog-list">
+        <li class="prog-item"><span class="prog-item__num">1</span><div><div class="prog-item__name">주말 탈출</div><div class="prog-item__desc">'주말'이라는 직장인 공감 키워드와 '탈출'의 해방감을 결합. '주말 여행' 검색 쿼리와 연결되기 쉽고, 시리즈임을 직관적으로 전달.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">2</span><div><div class="prog-item__name">연차 씁니다</div><div class="prog-item__desc">직장인 정체성을 전면에 내세운 제목. 연차를 쓰는 행위 자체가 공감 포인트. '연차 여행지' 검색 유입 기대.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">3</span><div><div class="prog-item__name">48시간 여행자</div><div class="prog-item__desc">주말 여행의 실제 가용 시간(금요일 밤~일요일 밤)을 숫자로 직관화. 타이트한 일정 안에서의 밀도 있는 경험을 암시해 클릭 욕구 자극.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">4</span><div><div class="prog-item__name">꿀팁 브이로그</div><div class="prog-item__desc">SEO에 가장 직접적으로 유리한 이름. '꿀팁'과 '브이로그'를 조합해 영상의 두 축을 동시에 전달.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">5</span><div><div class="prog-item__name">직장인 여행 연구소</div><div class="prog-item__desc">'연구소'로 체계적이고 신뢰도 있는 정보 채널 이미지. 구독 이유("정보를 얻을 수 있다")를 명확히 제공.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">6</span><div><div class="prog-item__name">짧게 멀리</div><div class="prog-item__desc">짧은 시간에 멀리 여행한다는 역설적 표현. 감성적이고 기억에 남는 어감. 국내·해외 모두 커버 가능.</div></div></li>
+        <li class="prog-item"><span class="prog-item__num">7</span><div><div class="prog-item__name">놓치기 전에 간다</div><div class="prog-item__desc">여행에 대한 미루는 심리를 정확히 찌르는 카피. "나중에 가야지"를 전환시키는 메시지.</div></div></li>
+      </ul>
+    </section>
+
+    <section class="section" id="p2-s2">
+      <div class="section__head"><span class="section__num">02</span><h2 class="section__title">영상 구조 (스크립트 구조)</h2></div>
+      <div class="script-block">[00:00–00:45] 오프닝 훅 — 결과 장면 or 가장 임팩트 있는 순간 먼저
+[00:45–02:00] 도입부 — "이번 여행지는?" + 직장인 상황 공감 세팅
+[02:00–04:00] 여행 전 준비 + 꿀팁 #1 — 교통/숙소/예약 팁
+[04:00–12:00] 여행 본편 — 현장 브이로그 3~4개 장면
+[12:00–16:00] 여행 꿀팁 #2~3 — 현장에서 자연스럽게 녹여 전달
+[16:00–19:00] 하이라이트 장면 or 예상 못한 에피소드
+[19:00–21:00] 총결산 — 총 비용·일정·만족도 별점 정리
+[21:00–22:30] 클로징 — "이 여행, 당신도 갈 수 있다"
+[22:30–23:30] 아웃트로 — 다음 편 예고 + 구독·알림 유도</div>
+      <div class="script-note">
+        <strong>훅 먼저</strong>: 가장 예쁜 장면을 0초에 배치해 이탈률 방어. 빠니보틀식 '처음부터 서사' 대신 시청자 선택 즉시 강화.<br>
+        <strong>총결산</strong>: 총 비용·소요 시간을 카드 형식으로 요약해 영상 전체의 신뢰도 높임. 기준 길이 20~25분.
+      </div>
+    </section>
+
+    <section class="section" id="p2-s3">
+      <div class="section__head"><span class="section__num">03</span><h2 class="section__title">예상 조회수</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>시점</th><th>보수</th><th>중립</th><th>낙관</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">업로드 후 1주일</td><td class="td-conserv">3,000~8,000</td><td class="td-neutral">1만~3만</td><td class="td-optimis">5만~15만</td></tr>
+            <tr><td class="td-label">1개월 후</td><td class="td-conserv">1만~2만</td><td class="td-neutral">3만~8만</td><td class="td-optimis">15만~40만</td></tr>
+            <tr><td class="td-label">6개월~1년 후</td><td class="td-conserv">2만~5만</td><td class="td-neutral">8만~20만</td><td class="td-optimis">40만~100만+</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="var-list">
+        <li class="var-item"><span><strong>꿀팁 SEO</strong> — "제주도 2박3일 꿀팁", "일본 혼자 여행 연차" 등 검색 유입형 제목 설정 시 중립~낙관 범위 진입</span></li>
+        <li class="var-item"><span><strong>시즌성</strong> — 연휴 전·여름 휴가 시즌 전 업로드 편은 초기 조회수 2~3배 기대</span></li>
+        <li class="var-item"><span><strong>국내편 제작 효율</strong> — 저비용 빠른 제작 → 업로드 주기 확보 → 채널 성장 가속</span></li>
+      </ul>
+    </section>
+
+    <section class="section" id="p2-s4">
+      <div class="section__head"><span class="section__num">04</span><h2 class="section__title">진행자 후보 및 게스트</h2></div>
+      <div class="host-list">
+        <div class="host-card">
+          <div class="host-card__label">후보 1</div>
+          <div class="host-card__name">원지 (원지의 하루)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@원지의하루" target="_blank">▶ YouTube @원지의하루</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/wonji_everyday" target="_blank">◉ Instagram @wonji_everyday</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 직장인·일상 브이로거 출신으로 "현실 공감" 코드가 강함. 화려하지 않은 일상 여행 스타일이 채널 컨셉과 정확히 일치. 20~30대 여성 직장인 구독자층에 강한 영향력.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 2</div>
+          <div class="host-card__name">원포인트리 (여행 유튜버)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@1pointlee" target="_blank">▶ YouTube @1pointlee</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/1point_lee" target="_blank">◉ Instagram @1point_lee</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 가성비·꿀팁 중심 여행 유튜버로 "적은 돈으로 잘 여행하는 법" 포맷을 이미 구축. 채널의 꿀팁 세그먼트 방향과 가장 일치하는 스타일. 직장인 구독자 비중 높음.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 3</div>
+          <div class="host-card__name">진용진 (방송인, 유튜버)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@jinyongjin" target="_blank">▶ YouTube @jinyongjin</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/jinyongjin_" target="_blank">◉ Instagram @jinyongjin_</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 유쾌하고 현실적인 캐릭터로 직장인 공감대 강함. 여행 + 예능 요소를 자연스럽게 결합하는 역량 보유. 빠니보틀·곽튜브의 진지한 탐험 무드와 다른 가벼운 해방감 연출 가능.</div>
+        </div>
+        <div class="host-card">
+          <div class="host-card__label">후보 4</div>
+          <div class="host-card__name">박막례 할머니 손녀 김유라 (여행 유튜버)</div>
+          <div class="host-card__links">
+            <a class="host-link host-link--yt" href="https://youtube.com/@makmye" target="_blank">▶ YouTube @makmye</a>
+            <a class="host-link host-link--ig" href="https://instagram.com/kim_youra" target="_blank">◉ Instagram @kim_youra</a>
+          </div>
+          <div class="host-card__why"><strong>왜 맞는가:</strong> 평범한 직장인이 글로벌 크리에이터가 된 실화. "나도 할 수 있다"는 메시지가 타깃 시청자와 강하게 공명. 여행 경험 풍부하면서도 현실 공감 코드 유지.</div>
+        </div>
+      </div>
+      <div class="guest-note">
+        <strong>게스트 (특집 편)</strong>
+        현지 교민 인플루언서 · 항공권/여행 꿀팁 유튜버 또보여행 · 구독자 동반 여행 포맷
+      </div>
+    </section>
+
+    <section class="section" id="p2-s5">
+      <div class="section__head"><span class="section__num">05</span><h2 class="section__title">파일럿 에피소드 4개</h2></div>
+      <div class="ep-list">
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 01</span><span class="ep-card__title">금요일 밤 11시 버스 타고 — 강릉 1박 2일 완전 가이드</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">금요일 퇴근 후 심야버스로 강릉 출발. 총 17만원 이내 완성 루트 공개. 심야 이동 노하우, 강릉역 근처 가성비 숙소 꿀팁 포함.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">고정 진행자 1인 솔로</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">"퇴근하고 바로 떠날 수 있다"는 실현 가능성. 강릉 일출 장면이 썸네일 메인 비주얼.</span></div>
+            <div class="ep-reactions">"이거 저도 따라했는데 진짜 17만원 나왔어요" · "강릉 숙소 링크 주세요" · "이 영상 보고 당장 버스 예약함" · "야근 안 했으면 지금쯤 강릉이었는데..."</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 02</span><span class="ep-card__title">연차 3일로 일본 오사카 — 직장인 짠 여행 루트</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">월요일~수요일 연차 3일로 오사카 2박 3일. 항공권 최저가 잡는 법부터 교토·나라 당일치기 루트까지. 환전·교통패스 꿀팁, 현지 편의점 활용법 포함.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">고정 진행자 + 친구 1인 동반</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">해외편이라 알고리즘 반응이 국내편보다 높을 가능성. 오사카 도톤보리 야경 비주얼 강점.</span></div>
+            <div class="ep-reactions">"항공권 특가 앱 뭐예요?" · "이 일정 캡처해서 팀장한테 연차 보고서 썼습니다" · "교토 반나절 루트 따로 영상 해줘요"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 03</span><span class="ep-card__title">서울에서 2시간 — 아무도 모르는 국내 힐링 여행지 TOP3 검증</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">KTX·버스 2시간 이내 비교적 덜 알려진 국내 힐링 여행지 3곳을 직접 다녀온 후 실망/만족 여부를 솔직하게 리뷰. "인스타 사진 vs. 실제" 비교 코너 포함.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">고정 진행자 솔로 or 2인 크루</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">솔직한 실망 리뷰 포함으로 신뢰도와 화제성 동시 확보. "인스타 vs. 현실" 대비 편집이 SNS 확산에 유리.</span></div>
+            <div class="ep-reactions">"남해 독일마을 저 기대하고 갔다가 실망했는데 ㅋㅋ 공감" · "이런 솔직한 리뷰 너무 필요했어요" · "다음 편도 이 포맷으로 해주세요"</div>
+          </div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card__head"><span class="ep-card__num">EP 04</span><span class="ep-card__title">월급 30만원으로 제주도 4박 5일 — 극한 절약 여행 도전</span></div>
+          <div class="ep-card__body">
+            <div class="ep-row"><span class="ep-row__label">내용</span><span class="ep-row__val">숙박비·항공비·식비 포함 총 30만원 이내로 제주 4박 5일 완성 도전. 성공 or 실패 여부를 마지막에 공개하는 서바이벌 구성.</span></div>
+            <div class="ep-row"><span class="ep-row__label">출연</span><span class="ep-row__val">고정 진행자 솔로 (극한 도전은 1인이 더 강렬한 서사)</span></div>
+            <div class="ep-row"><span class="ep-row__label">포인트</span><span class="ep-row__val">"진짜 될까?" 궁금증이 클릭 유발. 성공/실패 공개 구조로 이탈률 방어. 절약 꿀팁 집약판.</span></div>
+            <div class="ep-reactions">"30만원으로 제주 4박5일이 말이 돼?? (클릭)" · "나 이번 달 제주 가는데 이 영상 덕분에 예산 다시 짰음" · "실패했으면 어떡할 뻔 ㅋㅋ"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rival-section" id="p2-s6">
+      <div class="section__head"><span class="section__num">06</span><h2 class="section__title">라이벌 채널 대비 차별점</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>항목</th><th>빠니보틀</th><th>곽튜브</th><th class="rival-highlight">우리 채널</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">여행 기간</td><td>수개월~1년 장기</td><td>1~2주 해외 중심</td><td class="rival-highlight">2박 3일~5일 이내</td></tr>
+            <tr><td class="td-label">타깃</td><td>여행 꿈꾸는 전 연령</td><td>20대 해외 여행 관심층</td><td class="rival-highlight">현직 직장인 (25~35세)</td></tr>
+            <tr><td class="td-label">핵심 코드</td><td>서사·모험·감동</td><td>유머·현지 문화</td><td class="rival-highlight">현실 공감 + 실용 꿀팁</td></tr>
+            <tr><td class="td-label">정보성</td><td>낮음 (서사 중심)</td><td>중간</td><td class="rival-highlight">높음 (따라 할 수 있는 정보)</td></tr>
+            <tr><td class="td-label">비용 공개</td><td>없음</td><td>거의 없음</td><td class="rival-highlight">매편 총비용 공개</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<script>
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Sidebar active state on scroll
+document.addEventListener('scroll', () => {
+  document.querySelectorAll('.panel.active .section').forEach(sec => {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= 80 && rect.bottom > 80) {
+      const id = sec.id;
+      document.querySelectorAll('.panel.active .side-nav__item').forEach(a => {
+        a.classList.toggle('current', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { passive: true });
+</script>
